@@ -4,6 +4,7 @@ Take a look at
 https://docs.python.org/3/howto/regex.html
 """
 
+from blog.feeds import LatestPostsFeed
 from django.conf.urls import url
 from django.urls import include, path
 from . import views
@@ -23,9 +24,11 @@ urlpatterns = [
 #            set path('', views.post_list ~)
 #        II. if you want to use "class PostListView(ListView)"
 #            set path('', views.PostListView.as_view() ~)
-#    path('', views.post_list, name='post_list'),
-    path('', views.PostListView.as_view(), name='post_list'),
+    path('', views.post_list, name='post_list'),
+#    path('', views.PostListView.as_view(), name='post_list'),
     url(r'^(?P<year>\d{4})/(?P<month>\d{2})/(?P<day>\d{2})/(?P<slug>[-\w]+)/$', views.post_detail, name='post_detail'),
     url(r'^(?P<post_id>\d+)/share/$', views.post_share, name='post_share'),
-    path('<slug:slug>/', views.post_detail, name='post_detail')
+    path('<slug:slug>/', views.post_detail, name='post_detail'),
+    url(r'^tag/(?P<tag_slug>[-\w]+)/$', views.post_list, name='post_list_by_tag'),
+    path('feed', LatestPostsFeed(), name='post_feed'),
 ]
